@@ -8,24 +8,25 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../styles/shared-styles.html">
 
-<dom-module id="my-view404">
+<dom-module id="home-page">
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         display: block;
-
-        padding: 10px 20px;
       }
     </style>
 
-    Oops you hit a 404. <a href="/">Head back to home.</a>
+    <div class="card">
+      <h1>Home</h1>
+    </div>
   </template>
 
   <script>
     Polymer({
-      is: 'my-view404'
+      is: 'home-page'
     });
   </script>
 </dom-module>

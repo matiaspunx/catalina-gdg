@@ -1,11 +1,12 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/catalina-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/pages/home-page.html",
+    "src/pages/blog-page.html",
+    "src/pages/schedule-page.html",
+    "src/pages/speakers.html",
+    "src/pages/404-page.html"
   ],
   "sourceGlobs": [
    "src/**/*",
