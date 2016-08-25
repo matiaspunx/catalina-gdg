@@ -6,7 +6,7 @@
     "src/pages/blog-page.html",
     "src/pages/schedule-page.html",
     "src/pages/speakers.html",
-    "src/pages/404-page.html"
+    "src/pages/error-page.html"
   ],
   "sourceGlobs": [
    "src/**/*",
