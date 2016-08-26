@@ -44,6 +44,255 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         --paper-input-container-input-color: #fff;
       }
 
+      [layout] {
+        @apply(--layout);
+      }
+
+      [layout][horizontal] {
+        @apply(--layout-horizontal);
+      }
+
+      [layout][vertical] {
+        @apply(--layout-vertical);
+      }
+
+      [layout][center] {
+        @apply(--layout-center);
+      }
+
+      [layout][center-center] {
+        @apply(--layout-center-center);
+      }
+
+      [flex] {
+        @apply(--layout-flex);
+      }
+
+      [flex-auto] {
+        @apply(--layout-flex-auto);
+      }
+
+      [two] {
+        @apply(--layout-flex-2);
+      }
+
+      [end-justified] {
+        @apply(--layout-end-justified);
+      }
+
+      [end] {
+        @apply(--layout-end);
+      }
+
+      [justified] {
+        @apply(--layout-justified);
+      }
+
+      [self-center] {
+        @apply(--layout-self-center);
+      }
+
+      [self-end] {
+        @apply(--layout-self-end);
+      }
+
+      [wrap] {
+        @apply(--layout-wrap);
+      }
+
+      [inline] {
+        @apply(--layout-inline);
+      }
+
+      [relative] {
+        position: relative;
+      }
+
+      [fit] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      [show] {
+        display: block !important;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+      body,
+      .markdown-html {
+        font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        color: var(--primary-text-color);
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 1.4;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      .markdown-html h1,
+      .markdown-html h2,
+      .markdown-html h3,
+      .markdown-html h4 {
+        margin: 0;
+        font-weight: 300;
+      }
+
+      a,
+      .anchor-like,
+      .markdown-html a {
+        color: var(--default-primary-color);
+        text-decoration: none;
+      }
+
+      .placeholder-color {
+        background-color: var(--primary-background-color);
+      }
+
+      .container {
+        padding: 40px 16px;
+      }
+
+      .container-narrow {
+        padding: 20px 16px;
+      }
+
+      .container .heading {
+        margin-bottom: 20px;
+        font-size: 32px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .page-header {
+        margin: -90px auto 0;
+        padding-bottom: 20px;
+      }
+
+      .page-title {
+        margin-left: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 20px;
+        color: #fff;
+        pointer-events: none;
+      }
+
+      .markdown-html img {
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 100%;
+        display: block;
+      }
+
+      @media (min-width: 769px) {
+        .container {
+          margin: 0 auto;
+          padding: 60px 16px;
+          max-width: 896px;
+        }
+
+        .container-narrow {
+          padding: 30px 16px;
+        }
+
+        .container .heading {
+          margin-bottom: 40px;
+        }
+
+        .page-header {
+          margin: -170px auto 0;
+          padding-bottom: 0;
+        }
+
+        .page-title {
+          font-size: 42px;
+        }
+      }
+
+      @media (min-width: 1400px) {
+        .container {
+          max-width: 1280px;
+        }
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .align-pb-block {
+        margin-left: -9px;
+      }
+
+      [show] {
+        transition: opacity 0.5s;
+        opacity: 1 !important;
+      }
+
+      [hide] {
+        transition: opacity 0.5s;
+        opacity: 0 !important;
+      }
+
+      paper-dialog-scrollable {
+        padding: 0;
+        margin: 0;
+
+        --paper-dialog-scrollable: {
+          padding: 0;
+        };
+      }
+
+      .scrollable {
+        @apply(--layout-scroll);
+      }
+
+      .noscroll {
+        overflow: hidden;
+      }
+
+      paper-button.primary {
+        background: var(--default-primary-color);
+        color: var(--text-primary-color);
+      }
+
+      paper-tabs {
+        --paper-tabs-selection-bar-color: currentcolor;
+      }
+
+      paper-tabs paper-tab {
+        --paper-tab-ink: currentcolor;
+        --paper-tab-content: {
+          opacity: 1 !important;
+        };
+      }
+
+      paper-tab[link] {
+        padding: 0;
+      }
+
+      paper-tab[link] a {
+        padding: 0 12px;
+      }
+
+      paper-dialog {
+        color: inherit;
+        --paper-font-title: {
+        }; /* nuke paper-dialog's styling */
+      }
+
       .card {
         margin: 24px;
         padding: 16px;
@@ -68,12 +317,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         font-size: 30px;
         line-height: 64px;
-      }
-
-      h1 {
-        margin: 16px 0;
-        color: var(--primary-text-color);
-        font-size: 22px;
       }
     </style>
   </template>

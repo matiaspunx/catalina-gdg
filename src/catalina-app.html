@@ -1,30 +1,25 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-layout/app-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/effects/parallax-background.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/effects/blend-background.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
+
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-
 <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
 
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
+<link rel="import" href="effects/fade-effect.html">
+<link rel="import" href="behaviors/utils-behavior.html">
 <link rel="import" href="assets/catalina-icons.html">
+<link rel="import" href="elements/header-block.html">
 <link rel="import" href="styles/shared-styles.html">
 
 <dom-module id="catalina-app">
@@ -56,57 +51,61 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
-    <app-location route="{{route}}"></app-location>
-    <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
+    <!-- Responsive handlers -->
+    <iron-media-query id="mq-phone"
+                      full
+                      query="(max-width:768px)"
+                      query-matches="{{app.isPhoneSize}}"></iron-media-query>
+    <iron-media-query id="mq-tablet"
+                      full
+                      query="(min-width:769px) and (max-width:959px)"
+                      query-matches="{{app.isTabletSize}}"></iron-media-query>
+    <iron-media-query id="mq-desktop"
+                      query="(min-width:960px)"
+                      query-matches="{{app.isDesktopSize}}"></iron-media-query>
+
+                      <app-location route="{{route}}"></app-location>
+                      <app-route
+                        route="{{route}}"
+                        pattern="/:page"
+                        data="{{routeData}}"
+                        tail="{{subRoute}}"></app-route>
 
     <app-drawer-layout drawer-width="599px" force-narrow>
       <!-- Drawer content -->
-      <app-drawer>
-        <app-toolbar>Menu</app-toolbar>
-
+      <app-drawer id="drawer"
+        swipe-open="[[app.isPhoneSize]]">
+        <!-- <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="home" href="/home">Home</a>
           <a name="blog" href="/blog">Blog</a>
           <a name="schedule" href="/schedule">Schedule</a>
           <a name="speakers" href="/speakers">Speakers</a>
-        </iron-selector>
-
+        </iron-selector> -->
       </app-drawer>
 
-      <!-- Main content -->
-
-
+        <!-- Main content -->
         <app-header id="header" effects="parallax-background blend-background fade-effect" condenses shadow reveals>
-          <app-toolbar>
-            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-            <div main-title>GDG DevFest</div>
-          </app-toolbar>
+          <header-block app="{{app}}" primary sticky></header-block>
         </app-header>
 
-        <div class="main">
+        <div class="main-content">
           <neon-animated-pages
-              selected="[[page]]"
-              attr-for-selected="name"
-              fallback-selection="404"
-              role="main">
-            <home-page name="home"
-              app="{{app}}"
-              people="{{speakers}}"
-              posts="{{posts}}"
-              videos="{{videos}}"></home-page>
+          selected="[[app.page]]"
+          attr-for-selected="name"
+          selected-attribute="selected">
 
-            <blog-page name="blog"></blog-page>
-            <schedule-page name="schedule"></schedule-page>
-            <speakers-page name="speakers"></speakers-page>
-            <error-page name="404"></error-page>
+            <home-page name="home" app="{{app}}"></home-page>
+            <blog-page name="blog" app="{{app}}"></blog-page>
+            <schedule-page name="schedule" app="{{app}}"></schedule-page>
+            <speakers-page name="speakers" app="{{app}}"></speakers-page>
+            <error-page name="404" app="{{app}}"></error-page>
+
           </neon-animated-pages>
         </div>
 
     </app-drawer-layout>
+
     <toast-element id="toast"></toast-element>
   </template>
 
@@ -118,7 +117,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       Polymer({
         is: 'catalina-app',
-
+        behaviors: [
+          CATALINA.UtilsBehavior
+        ],
         properties: {
           app: {
             type: Object,
@@ -137,25 +138,72 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         observers: [
-          '_routePageChanged(routeData.page)'
+          '_routePageChanged(routeData.page)',
+          '_pageChanged(app.page)'
         ],
 
-        _routePageChanged: function(page) {
-          this.page = page || 'home';
+        ready: function() {
+          Polymer.RenderStatus.afterNextRender(this, function () {
+            CATALINA.ServiceWorkerRegistration.register();
+            this.importHref(this.resolveUrl('pages/schedule-page.html'), null, null, true);
+            this.importHref(this.resolveUrl('pages/speakers-page.html'), null, null, true);
+            this.importHref(this.resolveUrl('pages/blog-page.html'), null, null, true);
+            this.importHref(this.resolveUrl('pages/error-page.html'), null, null, true);
+          }.bind(this));
+        },
 
+        _routePageChanged: function (page) {
+          // Scroll to the top of the page on every *route* change. Use `Polymer.AppLayout.scroll`
+          // with `behavior: 'silent'` to disable header scroll effects during the scroll.
           if (this.app.page !== page) {
             Polymer.AppLayout.scroll({top: 0, behavior: 'silent'});
           }
+          this.set('app.page', (page || 'home'));
+
+          // Close the drawer - in case the *route* change came from a link in the drawer.
+          this.drawerOpened = false;
+
+          // if (this.app.data) {
+          //   var navObject = this.app.data.pages[this.app.page];
+          //   if (navObject && navObject.headerSettings) {
+          //     this.set('app.headerSettings', navObject.headerSettings);
+          //   }
+          // }
         },
 
-        _pageChanged: function(page) {
-          // Load page import on demand. Show 404 page if fails
-          var resolvedPageUrl = this.resolveUrl('pages/' + page + '-page.html');
-          this.importHref(resolvedPageUrl, null, this._showPage404, true);
+        // _pageChanged: function(page) {
+        //   // Load page import on demand. Show 404 page if fails
+        //   var resolvedPageUrl = this.resolveUrl('pages/' + page + '-page.html');
+        //   this.importHref(resolvedPageUrl, null, this._showPage404, true);
+        // },
+
+        _pageChanged: function (page) {
+          if (page && page !== '') {
+            this.importHref(this.resolveUrl('pages/' + page + '-page.html'), null, null, true);
+          }
+        },
+
+        backToTop: function (e) {
+          e.preventDefault();
+
+          Polymer.AppLayout.scroll({
+            top: 0,
+            behavior: 'smooth',
+            target: CATALINA.Elements.Scroller
+          });
+          e.target.blur();
+        },
+
+        toggleDrawer: function () {
+          this.$$('#drawer').toggle();
+        },
+
+        _isPage: function (page, selectedPage) {
+          return page === selectedPage;
         },
 
         _showPage404: function() {
-          this.page = 'error-page';
+          this.app.page = 'error';
         }
       });
     }());

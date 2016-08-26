@@ -10,18 +10,11 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 
 <link rel="import" href="../styles/shared-styles.html">
-<link rel="import" href="../behaviors/utils-behavior.html">
-<link rel="import" href="../behaviors/localize-behavior.html">
-
-
-<dom-module id="toolbar-block">
-
+<dom-module id="header-block">
   <template>
-
     <style include="shared-styles">
       :host {
         --header-color: #fff;
-
         --paper-tabs: {
           height: 64px;
         };
@@ -83,26 +76,29 @@
         <a href="/" hidden$="{{hideLogo}}" fade>
           <iron-image
             class="logo"
-            src="/images/logo-white.svg"
+            src="/images/devfest_f.png"
             sizing="contain"
-            alt="{{localize('title')}}"
+            alt="GDG Río de La Plata"
           ></iron-image>
         </a>
       </div>
       <div class="navItem" layout horizontal self-end>
         <template is="dom-if" if="[[!app.isPhoneSize]]">
           <paper-tabs selected="[[app.page]]" attr-for-selected="name" noink>
-            <template is="dom-repeat" items="[[app.data.navigation]]" as="nav">
-              <paper-tab name="[[nav.route]]" link>
-                <a href$="[[nav.permalink]]" class="nav-link">{{localize(nav.route)}}</a>
+            <!-- <template is="dom-repeat" items="[[app.data.navigation]]" as="nav"> -->
+              <paper-tab name="home" link>
+                <a href="/home" class="nav-link">Home</a>
               </paper-tab>
-            </template>
+              <paper-tab name="schedule" link>
+                <a href="/schedule" class="nav-link">Agenda</a>
+              </paper-tab>
+            <!-- </template> -->
           </paper-tabs>
-          <div class="action-button-wrapper" layout horizontal center-center>
+          <!-- <div class="action-button-wrapper" layout horizontal center-center>
             <a href$="[[app.data.tickets.url]]" target="_blank" on-tap="_trackBuyClick">
               <paper-button class="action-button">[[localize('buy-ticket')]]</paper-button>
             </a>
-          </div>
+          </div> -->
         </template>
       </div>
     </app-toolbar>
@@ -114,40 +110,12 @@
       'use strict';
 
       Polymer({
-
-        is: 'toolbar-block',
-
-        behaviors: [
-          HOVERBOARD.LocalizeBehavior,
-          HOVERBOARD.UtilsBehavior
-        ],
-
+        is: 'header-block',
         properties: {
           hideLogo: {
             type: Boolean
           }
-        },
-
-        observers: [
-          '_stylesChanged(app.headerSettings)'
-        ],
-
-        togglePanel: function () {
-          HOVERBOARD.Elements.Template.toggleDrawer();
-        },
-
-        _stylesChanged: function (headerSettings) {
-          if (headerSettings) {
-            this.customStyle['--header-color'] = headerSettings.fontColor;
-            this.hideLogo = headerSettings.hideLogo;
-            this.updateStyles();
-          }
-        },
-
-        _trackBuyClick: function () {
-          HOVERBOARD.Analytics.trackEvent('ticket', 'buy_click', 'toolbar');
         }
-
       });
 
     }());

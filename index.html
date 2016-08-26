@@ -71,7 +71,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         content="La conferencia mas grande de tecnología Google en Buenos Aires cuidadosamente desarrollada para vos por la comunidad GDG Río de La Plata! Todo sobre Android, Web y Cloud de la mano de los expertos">
   <meta name="twitter:image" content="images/social-share.png">
 
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
+  <link rel="dns-prefetch" href="https://apis.google.com">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', 'Noto', sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
+      background-color: #000;
+    }
+  </style>
+
     <script>
+
+    window.CATALINA = window.CATALINA || {};
+    window.ENV = 'dev';
+    window.PREFIX = '/';
+
       // Setup Polymer options
       window.Polymer = {
         dom: 'shadow',
@@ -119,18 +139,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <link rel="import" href="/src/catalina-app.html">
 
-    <style>
-      body {
-        margin: 0;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        line-height: 1.5;
-        min-height: 100vh;
-        background-color: #eeeeee;
-      }
-    </style>
   </head>
   <body>
-    <catalina-app></catalina-app>
+    <catalina-app id="capp"></catalina-app>
     <!-- Built with <3 by GDG Rio de La Plata using Polymer Starter Kit -->
+
+<script src="scripts/helper/util.js"></script>
+<script src="scripts/helper/elements.js"></script>
+<script src="scripts/helper/service-worker-registration.js"></script>
+<script src="scripts/catalina.js"></script>
   </body>
 </html>
